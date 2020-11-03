@@ -5,6 +5,7 @@ npm_publish:
     - npm
   stage: deploy
   script:
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
     - npm publish --access public --otp "$(curl -s $OTP_URL)"
   only:
     - tags

@@ -1,4 +1,5 @@
 .idea
+.npmrc
 build
 node_modules
 *.lock
