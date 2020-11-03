@@ -2,8 +2,6 @@ import {AbstractConverter} from "@ozelot379/convert-base-api";
 import {DeleteConverter} from "./DeleteConverter.mjs";
 import v4 from "uuid/v4.js";
 
-const {isArray} = Array;
-
 /**
  * Class MetadataConverter
  */
@@ -50,7 +48,7 @@ class MetadataConverter extends AbstractConverter {
 
         let description = MetadataConverter.mcmeta.pack.description;
         if (description) {
-            if (isArray(description)) {
+            if (Array.isArray(description)) {
                 description = description.map(line => line.text).join("\n");
             } else {
                 description = description.toString();
