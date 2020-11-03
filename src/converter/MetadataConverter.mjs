@@ -2,6 +2,8 @@ import {AbstractConverter} from "@ozelot379/convert-base-api";
 import {DeleteConverter} from "./DeleteConverter.mjs";
 import v4 from "uuid/v4.js";
 
+const {isArray} = Array;
+
 /**
  * Class MetadataConverter
  */
@@ -44,21 +46,34 @@ class MetadataConverter extends AbstractConverter {
             throw new Error("Only supports pack_format 4 (v1.13 or v1.14) or 5 (v1.15 or v1.16) or 6 (>= v1.16.2)!");
         }
 
+        const name = await this.input.getName();
+
+        let description = MetadataConverter.mcmeta.pack.description;
+        if (description) {
+            if (isArray(description)) {
+                description = description.map(line => line.text).join("\n");
+            } else {
+                description = description.toString();
+            }
+        } else {
+            description = "";
+        }
+
         const manifest = {
-            "format_version": 1,
-            "header": {
-                "description": MetadataConverter.mcmeta.pack.description,
-                "name": await this.input.getName(),
-                "platform_locked": false,
-                "uuid": uuid_header,
-                "version": [0, 0, 1]
+            format_version: 1,
+            header: {
+                description,
+                name,
+                platform_locked: false,
+                uuid: uuid_header,
+                version: [0, 0, 1]
             },
-            "modules": [
+            modules: [
                 {
-                    "description": MetadataConverter.mcmeta.pack.description,
-                    "type": "resources",
-                    "uuid": uuid_module,
-                    "version": [0, 0, 1]
+                    description,
+                    type: "resources",
+                    uuid: uuid_module,
+                    version: [0, 0, 1]
                 }
             ]
         };
