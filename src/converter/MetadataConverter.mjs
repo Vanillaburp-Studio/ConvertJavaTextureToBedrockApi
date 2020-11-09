@@ -38,18 +38,38 @@ class MetadataConverter extends AbstractConverter {
             uuid_module = v4();
         }
 
-        MetadataConverter.mcmeta = JSON.parse((await this.output.read(from)).toString("utf8").trim()); // trim it to supports UF8 files with 'BOOM' at the beginning
+        this.constructor.mcmeta = JSON.parse((await this.output.read(from)).toString("utf8").trim()); // trim it to supports UF8 files with 'BOOM' at the beginning
 
-        if (MetadataConverter.mcmeta.pack.pack_format !== 4 && MetadataConverter.mcmeta.pack.pack_format !== 5 && MetadataConverter.mcmeta.pack.pack_format !== 6) {
+        if (this.constructor.mcmeta.pack.pack_format !== 4 && this.constructor.mcmeta.pack.pack_format !== 5 && this.constructor.mcmeta.pack.pack_format !== 6) {
             throw new Error("Only supports pack_format 4 (v1.13 or v1.14) or 5 (v1.15 or v1.16) or 6 (>= v1.16.2)!");
         }
 
         const name = await this.input.getName();
 
-        let description = MetadataConverter.mcmeta.pack.description;
+        let description = this.constructor.mcmeta.pack.description;
         if (description) {
             if (Array.isArray(description)) {
-                description = description.map(line => line.text).join("");
+                description = description.map(line => {
+                    let text;
+
+                    if (line) {
+                        if (line instanceof Object) {
+                            text = Object.entries(this.constructor.FORMAT_CODES_MAP).reduce((text, [key, value]) => {
+                                if (line[key] || line.color === key) {
+                                    text = `${value}${text}`;
+                                }
+
+                                return text;
+                            }, line.text);
+                        } else {
+                            text = line.toString();
+                        }
+                    } else {
+                        text = "";
+                    }
+
+                    return text;
+                }).join("");
             } else {
                 description = description.toString();
             }
@@ -90,6 +110,35 @@ class MetadataConverter extends AbstractConverter {
         return [
             ["pack.mcmeta", "manifest.json", "bedrock_uuid_header", "bedrock_uuid_module"]
         ];
+    }
+
+    static get FORMAT_CODES_MAP() {
+        // https://minecraft.gamepedia.com/Formatting_codes#Color_codes
+        return {
+            black: "§0",
+            dark_blue: "§1",
+            dark_green: "§2",
+            dark_aqua: "§3",
+            dark_red: "§4",
+            dark_purple: "§5",
+            gold: "§6",
+            gray: "§7",
+            dark_gray: "§8",
+            blue: "§9",
+            green: "§a",
+            aqua: "§b",
+            red: "§c",
+            light_purple: "§d",
+            yellow: "§e",
+            white: "§f",
+            minecoin_gold: "§g",
+            obfuscated: "§k",
+            bold: "§l",
+            strikethrough: "§m",
+            underline: "§n",
+            italic: "§o",
+            reset: "§r"
+        };
     }
 }
 
