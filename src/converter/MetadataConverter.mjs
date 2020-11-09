@@ -49,7 +49,7 @@ class MetadataConverter extends AbstractConverter {
         let description = MetadataConverter.mcmeta.pack.description;
         if (description) {
             if (Array.isArray(description)) {
-                description = description.map(line => line.text).join("\n");
+                description = description.map(line => line.text).join("");
             } else {
                 description = description.toString();
             }
@@ -58,11 +58,11 @@ class MetadataConverter extends AbstractConverter {
         }
 
         const manifest = {
-            format_version: 1,
+            format_version: 2,
             header: {
                 description,
+                min_engine_version: [1, 16, 20],
                 name,
-                platform_locked: false,
                 uuid: uuid_header,
                 version: [0, 0, 1]
             },
