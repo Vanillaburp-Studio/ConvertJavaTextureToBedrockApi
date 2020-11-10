@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.1.0]
+- Bedrock manifest format version 2
+- Convert java mcmeta description array
+- Horse converter are now experimental
+
 ## [4.0.5]
 - Set alpha to `2` in `OverlayToTranslateConverter` 
 - Auto publish to npm

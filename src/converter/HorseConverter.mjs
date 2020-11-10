@@ -8,6 +8,10 @@ class HorseConverter extends AbstractConverter {
      * @inheritDoc
      */
     async convert() {
+        if (!this.options.experimental) {
+            return [];
+        }
+
         const [from, to] = this.data;
 
         if (!await this.output.exists(from)) {

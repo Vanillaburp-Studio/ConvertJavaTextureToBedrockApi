@@ -21,7 +21,7 @@ import {DialogConverter} from "./DialogConverter.mjs";
 import {DolphinConverter} from "./DolphinConverter.mjs";
 import {DrownedConverter} from "./DrownedConverter.mjs";
 import {EnchantedItemGlintConverter} from "./EnchantedItemGlintConverter.mjs";
-import {FishHookConverter} from "./FishingConverter.mjs";
+import {FishHookConverter} from "./FishHookConverter.mjs";
 import {FireworksConverter} from "./FireworksConverter.mjs";
 import {FixWrongRootFolderConverter} from "./FixWrongRootFolderConverter.mjs";
 import {FoxConverter} from "./FoxConverter.mjs";
