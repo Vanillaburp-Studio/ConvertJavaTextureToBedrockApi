@@ -14,13 +14,15 @@ class WaterConverter extends AbstractConverter {
             return [];
         }
 
-        this.log.log(`Convert water ${from}`);
+        this.log.log(`TEST - Convert water ${from}`);
 
         const image = await this.readImage(from);
 
         if (grayscale) {
             image.grayscale(); // Fix cauldron water (Some texture packs still using a colored water texture but it's just a grayscale texture)
         }
+		//fix transparent java water textures (bedrock uses opaque textures, and sets the opacity based on render distance)
+		image.opaque();
 
         image.ensureMinWidth(mind_width); // Bedrock version has doubled pixels as the Java version
 
