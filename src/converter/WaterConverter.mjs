@@ -14,7 +14,7 @@ class WaterConverter extends AbstractConverter {
             return [];
         }
 
-        this.log.log(`TEST - Convert water ${from}`);
+        this.log.log(`Convert water ${from}`);
 
         const image = await this.readImage(from);
 
